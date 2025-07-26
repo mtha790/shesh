@@ -4,6 +4,8 @@
 
 Shesh is a lightweight Common Lisp library that provides a simple and intuitive interface for interacting with shell processes.
 
+Coded with the help of a coding assistant. 
+
 ## Installation
 
 1. Clone this repository to your local machine. Clone it in your `quicklisp/local-project` or declare it in `source-registry.conf`

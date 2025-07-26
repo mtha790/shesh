@@ -1,36 +1,44 @@
-;;;; Shesh - Shell Interface for Common Lisp
-;;;; Using UIOP to interact with a shell process
-
 (defpackage :shesh
   (:use :cl)
   (:export #:*current-shell*
            #:*stdout*
-           #:init-shell
+           #:init
            #:exec
            #:stdout
-           #:close-shell
-           #:sh))
+           #:close
+           #:sh
+           #:exec-timeout))
 
 (in-package :shesh)
 
-;;; Special variables
 (defvar *current-shell* nil
-        "The current shell process object")
+  "The current shell process object managed by UIOP.")
 
 (defvar *stdout* ""
-        "Buffer to store the shell output")
+  "Buffer to store the cumulative shell output.")
 
 (defvar *shell-output-stream* nil
-        "The output stream of the shell process")
+  "The output stream of the shell process.")
 
 (defvar *shell-input-stream* nil
-        "The input stream of the shell process")
+  "The input stream of the shell process.")
 
-;;; Initialize the shell
-(defun init-shell (&optional (shell-command "bash"))
-  "Initialize a new shell process"
+(defun init (&optional (shell-command "bash"))
+  "Initialize a new shell process.
+  
+  Args:
+    shell-command: The shell command to execute (default: 'bash')
+  
+  Returns:
+    The shell process object
+  
+  Side effects:
+    - Closes any existing shell process
+    - Creates new shell process with interactive streams
+    - Configures shell for predictable output
+    - Clears stdout buffer"
   (when *current-shell*
-        (close-shell))
+    (close))
 
   ;; Launch the shell with interactive streams
   (setf *current-shell*
